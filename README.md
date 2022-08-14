@@ -4,6 +4,14 @@
 
 完整的四级行政区划数据组织
 
+## 数据情况
+
+数据原源于网络，由于时间久远，我已经忘记了是如何获取到的
+
+![China](http://img.zhoujian.site/knowledge-base/fuyi-weather/202208142058324.png)
+
+![浙江省](http://img.zhoujian.site/knowledge-base/fuyi-weather/202208142106822.png)
+
 ## 名词解释
 
 ### 省级行政区
@@ -54,29 +62,526 @@
 
 存在错乱数据，可以使用行政区代码识别（adcode）
 
-![省级行政区-shapefile](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/a761c947-f307-4791-a115-6bc690a96008/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220116%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220116T140057Z&X-Amz-Expires=86400&X-Amz-Signature=70ec28d8b1828d9daeb99fadec49e586b16c8c392fb05b117eb4c388a3b0706e&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+![省级行政区-shapefile](http://img.zhoujian.site/knowledge-base/fuyi-weather/20220814173117.png)
 
 ## 地级行政区
 
 存在错乱数据，可以使用行政区代码识别（code），需要截取前6位
 
-![地级行政区](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/030f569a-5f95-4d0f-aa98-393347175b9a/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220116%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220116T140243Z&X-Amz-Expires=86400&X-Amz-Signature=95804284a7c913ee44e8186126dd300de3e733c6ae24d06670f83910ff110791&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+![地级行政区](http://img.zhoujian.site/knowledge-base/fuyi-weather/20220814173132.png)
 
 ## 县级行政区
 
 存在错乱数据，可以使用行政区代码识别（code），需要截取前6位
 
-![县级行政区-shapefile](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/22714973-832d-4e1f-b305-7d1c472c5fc0/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220116%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220116T140340Z&X-Amz-Expires=86400&X-Amz-Signature=01f3a171d446afede57815a96796d2abd28089da884944d0adaf405e55453aff&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+![县级行政区-shapefile](http://img.zhoujian.site/knowledge-base/fuyi-weather/20220814173141.png)
 
 ## 乡级行政区
 
-![乡级行政区-shapefile](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4b555a5a-2de0-471e-91da-019098daefc1/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220116%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220116T140429Z&X-Amz-Expires=86400&X-Amz-Signature=8ae3cec9129b97174cdf79f403ad9f566b586464e2fef329d86a198734aacb30&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+![乡级行政区-shapefile](http://img.zhoujian.site/knowledge-base/fuyi-weather/20220814173148.png)
 
 ## 成果
 
+记录数：46652
+
 点数据为各个行政区中心点
 
-![数据解析成果-shapefile_to_postgis](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/771d9359-e3b7-41a3-991c-f1be1172baff/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220116%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220116T140505Z&X-Amz-Expires=86400&X-Amz-Signature=a39f9df4cff94d1fcbd16e6cb1336ff6c4fc039daa0dd0e5b383bff46f216572&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+![数据解析成果-shapefile_to_postgis](http://img.zhoujian.site/knowledge-base/fuyi-weather/202208141739133.png)
+
+## 数据表
+
+### PostGIS
+
+```sql
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+```
+
+
+
+### 行政区划
+
+```sql
+--
+-- Name: district_info_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.district_info_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.district_info_id_seq OWNER TO postgres;
+
+-- Table: public.district_info
+
+-- DROP TABLE IF EXISTS public.district_info;
+
+CREATE TABLE IF NOT EXISTS public.district_info
+(
+    name character varying COLLATE pg_catalog."default",
+    grade integer,
+    code character varying COLLATE pg_catalog."default",
+    center_point geometry(Point,4326),
+    bounds geometry(MultiPolygon,4326),
+    create_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    uid character varying COLLATE pg_catalog."default",
+    id bigint NOT NULL DEFAULT nextval('district_info_id_seq'::regclass),
+    CONSTRAINT district_info_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.district_info
+    OWNER to postgres;
+
+COMMENT ON TABLE public.district_info
+    IS '行政区划信息表';
+
+COMMENT ON COLUMN public.district_info.name
+    IS '行政区名称';
+
+COMMENT ON COLUMN public.district_info.grade
+    IS '行政区等级，目前支持：（1：省级行政区，2；市级行政区，3：县级行政区，4：乡级行政区）';
+
+COMMENT ON COLUMN public.district_info.code
+    IS '行政区编码。其中，县级与县级以上行政区编码为6位，县级以下（即乡级）行政区编码为9位';
+
+COMMENT ON COLUMN public.district_info.center_point
+    IS '行政区中心点，数据坐标系：4326';
+
+COMMENT ON COLUMN public.district_info.bounds
+    IS '行政区边界，数据坐标系：4326';
+
+COMMENT ON COLUMN public.district_info.uid
+    IS '唯一标识，便于数据迁移';
+
+--
+-- Name: district_info_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.district_info_id_seq OWNED BY public.district_info.id;
+```
+
+## 日志
+
+```t
+...
+org.fuyi.district.DistrictParseApplication
+/home/fuyi/GeoDatabase/China
+-------------------
+/home/fuyi/GeoDatabase/China/重庆市/重庆市_市界.shp
+current element size: 12
+-------------------
+/home/fuyi/GeoDatabase/China/重庆市/重庆市_省界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/重庆市/重庆市_县界.shp
+current element size: 75
+-------------------
+/home/fuyi/GeoDatabase/China/重庆市/重庆市_乡镇边界.shp
+current element size: 1218
+-------------------
+/home/fuyi/GeoDatabase/China/新疆自治区/新疆自治区_省界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/新疆自治区/新疆自治区_县界.shp
+current element size: 111
+-------------------
+/home/fuyi/GeoDatabase/China/新疆自治区/新疆自治区_乡镇边界.shp
+current element size: 1410
+-------------------
+/home/fuyi/GeoDatabase/China/新疆自治区/新疆自治区_市界.shp
+current element size: 28
+-------------------
+/home/fuyi/GeoDatabase/China/湖北省/湖北省_市界.shp
+current element size: 28
+-------------------
+/home/fuyi/GeoDatabase/China/湖北省/湖北省_省界.shp
+current element size: 6
+-------------------
+/home/fuyi/GeoDatabase/China/湖北省/湖北省_县界.shp
+current element size: 150
+-------------------
+/home/fuyi/GeoDatabase/China/湖北省/湖北省_乡镇边界.shp
+current element size: 1679
+-------------------
+/home/fuyi/GeoDatabase/China/陕西省/陕西省_市界.shp
+current element size: 24
+-------------------
+/home/fuyi/GeoDatabase/China/陕西省/陕西省_县界.shp
+current element size: 158
+-------------------
+/home/fuyi/GeoDatabase/China/陕西省/陕西省_省界.shp
+current element size: 7
+-------------------
+/home/fuyi/GeoDatabase/China/陕西省/陕西省_乡镇边界.shp
+current element size: 1559
+-------------------
+/home/fuyi/GeoDatabase/China/广东省/广东省_省界.shp
+current element size: 7
+-------------------
+/home/fuyi/GeoDatabase/China/广东省/广东省_县界.shp
+current element size: 160
+-------------------
+/home/fuyi/GeoDatabase/China/广东省/广东省_市界.shp
+current element size: 31
+-------------------
+/home/fuyi/GeoDatabase/China/广东省/广东省_乡镇边界.shp
+current element size: 1902
+-------------------
+/home/fuyi/GeoDatabase/China/云南省/云南省_乡镇边界.shp
+current element size: 1594
+-------------------
+/home/fuyi/GeoDatabase/China/云南省/云南省_省界.shp
+current element size: 5
+-------------------
+/home/fuyi/GeoDatabase/China/云南省/云南省_县界.shp
+current element size: 165
+-------------------
+/home/fuyi/GeoDatabase/China/云南省/云南省_市界.shp
+current element size: 27
+-------------------
+/home/fuyi/GeoDatabase/China/宁夏省/宁夏省_市界.shp
+current element size: 12
+-------------------
+/home/fuyi/GeoDatabase/China/宁夏省/宁夏省_乡镇边界.shp
+current element size: 326
+-------------------
+/home/fuyi/GeoDatabase/China/宁夏省/宁夏省_县界.shp
+current element size: 36
+-------------------
+/home/fuyi/GeoDatabase/China/宁夏省/宁夏省_省界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/内蒙古自治区/内蒙古自治区_乡镇边界.shp
+current element size: 1498
+-------------------
+/home/fuyi/GeoDatabase/China/内蒙古自治区/内蒙古自治区_市界.shp
+current element size: 35
+-------------------
+/home/fuyi/GeoDatabase/China/内蒙古自治区/内蒙古自治区_省界.shp
+current element size: 7
+-------------------
+/home/fuyi/GeoDatabase/China/内蒙古自治区/内蒙古自治区_县界.shp
+current element size: 173
+-------------------
+/home/fuyi/GeoDatabase/China/海南省/海南省_县界.shp
+current element size: 27
+-------------------
+/home/fuyi/GeoDatabase/China/海南省/海南省_省界.shp
+current element size: 1
+-------------------
+/home/fuyi/GeoDatabase/China/海南省/海南省_市界.shp
+current element size: 19
+-------------------
+/home/fuyi/GeoDatabase/China/海南省/海南省_乡镇边界.shp
+current element size: 214
+-------------------
+/home/fuyi/GeoDatabase/China/山东省/山东省_省界.shp
+current element size: 5
+-------------------
+/home/fuyi/GeoDatabase/China/山东省/山东省_乡镇边界.shp
+current element size: 1984
+-------------------
+/home/fuyi/GeoDatabase/China/山东省/山东省_市界.shp
+current element size: 27
+-------------------
+/home/fuyi/GeoDatabase/China/山东省/山东省_县界.shp
+current element size: 167
+-------------------
+/home/fuyi/GeoDatabase/China/浙江省/浙江省_省界.shp
+current element size: 6
+-------------------
+/home/fuyi/GeoDatabase/China/浙江省/浙江省_市界.shp
+current element size: 18
+-------------------
+/home/fuyi/GeoDatabase/China/浙江省/浙江省_县界.shp
+current element size: 110
+-------------------
+/home/fuyi/GeoDatabase/China/浙江省/浙江省_乡镇边界.shp
+current element size: 1431
+-------------------
+/home/fuyi/GeoDatabase/China/青海省/青海省_省界.shp
+current element size: 5
+-------------------
+/home/fuyi/GeoDatabase/China/青海省/青海省_乡镇边界.shp
+current element size: 470
+-------------------
+/home/fuyi/GeoDatabase/China/青海省/青海省_县界.shp
+current element size: 72
+-------------------
+/home/fuyi/GeoDatabase/China/青海省/青海省_市界.shp
+current element size: 19
+-------------------
+/home/fuyi/GeoDatabase/China/江苏省/江苏省_乡镇边界.shp
+current element size: 1634
+-------------------
+/home/fuyi/GeoDatabase/China/江苏省/江苏省_省界.shp
+current element size: 5
+-------------------
+/home/fuyi/GeoDatabase/China/江苏省/江苏省_市界.shp
+current element size: 26
+-------------------
+/home/fuyi/GeoDatabase/China/江苏省/江苏省_县界.shp
+current element size: 138
+-------------------
+/home/fuyi/GeoDatabase/China/江西省/江西省_市界.shp
+current element size: 27
+-------------------
+/home/fuyi/GeoDatabase/China/江西省/江西省_乡镇边界.shp
+current element size: 1927
+-------------------
+/home/fuyi/GeoDatabase/China/江西省/江西省_县界.shp
+current element size: 137
+-------------------
+/home/fuyi/GeoDatabase/China/江西省/江西省_省界.shp
+current element size: 7
+-------------------
+/home/fuyi/GeoDatabase/China/西藏自治区/西藏自治区_县界.shp
+current element size: 91
+-------------------
+/home/fuyi/GeoDatabase/China/西藏自治区/西藏自治区_省界.shp
+current element size: 5
+-------------------
+/home/fuyi/GeoDatabase/China/西藏自治区/西藏自治区_市界.shp
+current element size: 14
+-------------------
+/home/fuyi/GeoDatabase/China/西藏自治区/西藏自治区_乡镇边界.shp
+current element size: 737
+-------------------
+/home/fuyi/GeoDatabase/China/天津市/天津市_县界.shp
+current element size: 32
+-------------------
+/home/fuyi/GeoDatabase/China/天津市/天津市_省界.shp
+current element size: 2
+-------------------
+/home/fuyi/GeoDatabase/China/天津市/天津市_市界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/天津市/天津市_乡镇边界.shp
+current element size: 360
+-------------------
+/home/fuyi/GeoDatabase/China/台湾省/台湾省_村名.shp
+current element size: 0
+-------------------
+/home/fuyi/GeoDatabase/China/台湾省/台湾省_乡镇名称.shp
+current element size: 0
+-------------------
+/home/fuyi/GeoDatabase/China/台湾省/台湾省_县名称.shp
+current element size: 0
+-------------------
+/home/fuyi/GeoDatabase/China/广西省/广西省_省界.shp
+current element size: 3
+-------------------
+/home/fuyi/GeoDatabase/China/广西省/广西省_市界.shp
+current element size: 25
+-------------------
+/home/fuyi/GeoDatabase/China/广西省/广西省_县界.shp
+current element size: 142
+-------------------
+/home/fuyi/GeoDatabase/China/广西省/广西省_乡镇边界.shp
+current element size: 1433
+-------------------
+/home/fuyi/GeoDatabase/China/香港特别行政区/香港特别行政区_乡镇边界.shp
+current element size: 8
+-------------------
+/home/fuyi/GeoDatabase/China/香港特别行政区/香港特别行政区_县界.shp
+current element size: 21
+-------------------
+/home/fuyi/GeoDatabase/China/香港特别行政区/香港特别行政区_省界.shp
+current element size: 2
+-------------------
+/home/fuyi/GeoDatabase/China/香港特别行政区/香港特别行政区_市界.shp
+current element size: 1
+-------------------
+/home/fuyi/GeoDatabase/China/安徽省/安徽省_市界.shp
+current element size: 34
+-------------------
+/home/fuyi/GeoDatabase/China/安徽省/安徽省_乡镇边界.shp
+current element size: 1832
+-------------------
+/home/fuyi/GeoDatabase/China/安徽省/安徽省_省界.shp
+current element size: 6
+-------------------
+/home/fuyi/GeoDatabase/China/安徽省/安徽省_县界.shp
+current element size: 149
+-------------------
+/home/fuyi/GeoDatabase/China/河南省/河南省_市界.shp
+current element size: 38
+-------------------
+/home/fuyi/GeoDatabase/China/河南省/河南省_乡镇边界.shp
+current element size: 2722
+-------------------
+/home/fuyi/GeoDatabase/China/河南省/河南省_县界.shp
+current element size: 209
+-------------------
+/home/fuyi/GeoDatabase/China/河南省/河南省_省界.shp
+current element size: 7
+-------------------
+/home/fuyi/GeoDatabase/China/黑龙江省/黑龙江省_市界.shp
+current element size: 20
+-------------------
+/home/fuyi/GeoDatabase/China/黑龙江省/黑龙江省_省界.shp
+current element size: 3
+-------------------
+/home/fuyi/GeoDatabase/China/黑龙江省/黑龙江省_县界.shp
+current element size: 150
+-------------------
+/home/fuyi/GeoDatabase/China/黑龙江省/黑龙江省_乡镇边界.shp
+current element size: 1874
+-------------------
+/home/fuyi/GeoDatabase/China/澳门特别行政区/澳门特别行政区_市界.shp
+current element size: 1
+-------------------
+/home/fuyi/GeoDatabase/China/澳门特别行政区/澳门特别行政区_省界.shp
+current element size: 2
+-------------------
+/home/fuyi/GeoDatabase/China/澳门特别行政区/澳门特别行政区_乡镇边界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/澳门特别行政区/澳门特别行政区_县界.shp
+current element size: 9
+-------------------
+/home/fuyi/GeoDatabase/China/吉林省/吉林省_省界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/吉林省/吉林省_县界.shp
+current element size: 82
+-------------------
+/home/fuyi/GeoDatabase/China/吉林省/吉林省_乡镇边界.shp
+current element size: 1134
+-------------------
+/home/fuyi/GeoDatabase/China/吉林省/吉林省_市界.shp
+current element size: 19
+-------------------
+/home/fuyi/GeoDatabase/China/北京市/北京市_县界.shp
+current element size: 32
+-------------------
+/home/fuyi/GeoDatabase/China/北京市/北京市_乡镇边界.shp
+current element size: 395
+-------------------
+/home/fuyi/GeoDatabase/China/北京市/北京市_市界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/北京市/北京市_省界.shp
+current element size: 3
+-------------------
+/home/fuyi/GeoDatabase/China/四川省/四川省_乡镇边界.shp
+current element size: 4933
+-------------------
+/home/fuyi/GeoDatabase/China/四川省/四川省_市界.shp
+current element size: 32
+-------------------
+/home/fuyi/GeoDatabase/China/四川省/四川省_省界.shp
+current element size: 7
+-------------------
+/home/fuyi/GeoDatabase/China/四川省/四川省_县界.shp
+current element size: 237
+-------------------
+/home/fuyi/GeoDatabase/China/上海市/上海市_省界.shp
+current element size: 3
+-------------------
+/home/fuyi/GeoDatabase/China/上海市/上海市_乡镇边界.shp
+current element size: 251
+-------------------
+/home/fuyi/GeoDatabase/China/上海市/上海市_县界.shp
+current element size: 24
+-------------------
+/home/fuyi/GeoDatabase/China/上海市/上海市_市界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/甘肃省/甘肃省_县界.shp
+current element size: 137
+-------------------
+/home/fuyi/GeoDatabase/China/甘肃省/甘肃省_市界.shp
+current element size: 33
+-------------------
+/home/fuyi/GeoDatabase/China/甘肃省/甘肃省_省界.shp
+current element size: 7
+-------------------
+/home/fuyi/GeoDatabase/China/甘肃省/甘肃省_乡镇边界.shp
+current element size: 1601
+-------------------
+/home/fuyi/GeoDatabase/China/福建省/福建省_市界.shp
+current element size: 18
+-------------------
+/home/fuyi/GeoDatabase/China/福建省/福建省_乡镇边界.shp
+current element size: 1272
+-------------------
+/home/fuyi/GeoDatabase/China/福建省/福建省_省界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/福建省/福建省_县界.shp
+current element size: 109
+-------------------
+/home/fuyi/GeoDatabase/China/河北省/河北省_市界.shp
+current element size: 26
+-------------------
+/home/fuyi/GeoDatabase/China/河北省/河北省_乡镇边界.shp
+current element size: 2574
+-------------------
+/home/fuyi/GeoDatabase/China/河北省/河北省_省界.shp
+current element size: 8
+-------------------
+/home/fuyi/GeoDatabase/China/河北省/河北省_县界.shp
+current element size: 225
+-------------------
+/home/fuyi/GeoDatabase/China/贵州省/贵州省_乡镇边界.shp
+current element size: 1791
+-------------------
+/home/fuyi/GeoDatabase/China/贵州省/贵州省_县界.shp
+current element size: 122
+-------------------
+/home/fuyi/GeoDatabase/China/贵州省/贵州省_市界.shp
+current element size: 16
+-------------------
+/home/fuyi/GeoDatabase/China/贵州省/贵州省_省界.shp
+current element size: 5
+-------------------
+/home/fuyi/GeoDatabase/China/湖南省/湖南省_省界.shp
+current element size: 6
+-------------------
+/home/fuyi/GeoDatabase/China/湖南省/湖南省_市界.shp
+current element size: 28
+-------------------
+/home/fuyi/GeoDatabase/China/湖南省/湖南省_乡镇边界.shp
+current element size: 2662
+-------------------
+/home/fuyi/GeoDatabase/China/湖南省/湖南省_县界.shp
+current element size: 169
+-------------------
+/home/fuyi/GeoDatabase/China/山西省/山西省_县界.shp
+current element size: 154
+-------------------
+/home/fuyi/GeoDatabase/China/山西省/山西省_市界.shp
+current element size: 28
+-------------------
+/home/fuyi/GeoDatabase/China/山西省/山西省_乡镇边界.shp
+current element size: 1580
+-------------------
+/home/fuyi/GeoDatabase/China/山西省/山西省_省界.shp
+current element size: 5
+-------------------
+/home/fuyi/GeoDatabase/China/辽宁省/辽宁省_县界.shp
+current element size: 123
+-------------------
+/home/fuyi/GeoDatabase/China/辽宁省/辽宁省_市界.shp
+current element size: 21
+-------------------
+/home/fuyi/GeoDatabase/China/辽宁省/辽宁省_省界.shp
+current element size: 4
+-------------------
+/home/fuyi/GeoDatabase/China/辽宁省/辽宁省_乡镇边界.shp
+current element size: 1659
+
+Process finished with exit code 0
+
+```
+
+
 
 ## 参考
 
